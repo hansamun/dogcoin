@@ -113,18 +113,36 @@ export default function Component() {
 
   const initializeAudio = () => {
     if (!audioRef) {
-      const audio = new Audio("/song.mp3")
+      const audio = new Audio(
+        "https://jwolkiasgvkwmuqgqjmz.supabase.co/storage/v1/object/sign/song/song.mp3?token=eyJraWQiOiJzdG9yYWdlLXVybC1zaWduaW5nLWtleV80YTY1YjE2ZC0yZGU5LTQ5ZjMtOGMwMi1lYzQ0ZmIwNjJhMmMiLCJhbGciOiJIUzI1NiJ9.eyJ1cmwiOiJzb25nL3NvbmcubXAzIiwiaWF0IjoxNzUzOTczOTc4LCJleHAiOjE3ODU1MDk5Nzh9.s4mbXeMigHAAK_qfJMd9or3hUBEuG_Y0e20V5CaxyvY",
+      )
+      audio.crossOrigin = "anonymous"
       audio.volume = volume
+      audio.preload = "metadata"
+
       audio.addEventListener("loadedmetadata", () => {
         setDuration(audio.duration)
+        console.log("Audio loaded successfully, duration:", audio.duration)
       })
+
       audio.addEventListener("timeupdate", () => {
         setCurrentTime(audio.currentTime)
       })
+
       audio.addEventListener("ended", () => {
         setIsPlaying(false)
         setCurrentTime(0)
       })
+
+      audio.addEventListener("error", (e) => {
+        console.error("Audio loading error:", e)
+        console.error("Audio error details:", audio.error)
+      })
+
+      audio.addEventListener("canplay", () => {
+        console.log("Audio can start playing")
+      })
+
       setAudioRef(audio)
       return audio
     }
@@ -137,8 +155,16 @@ export default function Component() {
       audio.pause()
       setIsPlaying(false)
     } else {
-      audio.play()
-      setIsPlaying(true)
+      audio
+        .play()
+        .then(() => {
+          setIsPlaying(true)
+          console.log("Audio started playing successfully")
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error)
+          setIsPlaying(false)
+        })
     }
   }
 
@@ -191,8 +217,8 @@ export default function Component() {
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-6 md:mb-8 px-4">
         {[
           { label: "BUY", action: () => {} },
-          { label: "TG", action: () => {} },
-          { label: "X", action: () => {} },
+          { label: "TG", action: () => window.open("https://t.me/dogcoinOnBasee", "_blank") },
+          { label: "X", action: () => window.open("https://x.com/dogcoin_onBase", "_blank") },
           { label: "DEX", action: () => {} },
           { label: "ABOUT", action: () => handleNavigation("about") },
           { label: "TOKENOMIC", action: () => handleNavigation("tokenomics") },
