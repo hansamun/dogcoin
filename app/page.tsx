@@ -216,10 +216,17 @@ export default function Component() {
       {/* Navigation Buttons */}
       <div className="flex flex-wrap justify-center gap-2 sm:gap-3 md:gap-4 mb-6 md:mb-8 px-4">
         {[
-          { label: "BUY", action: () => {} },
+          {
+            label: "BUY",
+            action: () => window.open("https://ape.store/base/0x19f308f5ffd17c690ad54b8e8b3aade96e9ffe50", "_blank"),
+          },
           { label: "TG", action: () => window.open("https://t.me/dogcoinOnBasee", "_blank") },
           { label: "X", action: () => window.open("https://x.com/dogcoin_onBase", "_blank") },
-          { label: "DEX", action: () => {} },
+          {
+            label: "DEX",
+            action: () =>
+              window.open("https://dexscreener.com/base/0xA2fF290F12cA23C363C9EF3FE8bAB77a470d1C0f", "_blank"),
+          },
           { label: "ABOUT", action: () => handleNavigation("about") },
           { label: "TOKENOMIC", action: () => handleNavigation("tokenomics") },
           { label: "MEMES", action: () => handleNavigation("memes") },
